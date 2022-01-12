@@ -1,28 +1,33 @@
-
+import os
 import pygame
-
 from sys import exit
 
 
 pygame.init() #to start game
 
-
-SCREENHEIGHT = 600
-SCREENWIDTH = 800     #640, 480
+SCREENHEIGHT = 200
+SCREENWIDTH = 700     #640, 480
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 screen.fill((100, 201, 207))  #64C9CF
 pygame.display.set_caption('Super Moby')
 
+#Zeynep Character Animation & Sprites AFTER CODE with pygame.display.set_caption
+#images for walking left/right, staying still and background
+walkRight = [pygame.image.load(os.path.join('mobyCha','r1.png')),pygame.image.load(os.path.join('mobyCha','r2.png')), pygame.image.load(os.path.join('mobyCha','r3.png')), pygame.image.load(os.path.join('mobyCha','r4.png')), pygame.image.load(os.path.join('mobyCha','r5.png')), pygame.image.load(os.path.join('mobyCha','r6.png')), pygame.image.load(os.path.join('mobyCha','r7.png')), pygame.image.load(os.path.join('mobyCha','r8.png')), pygame.image.load(os.path.join('mobyCha','r9.png'))]
+walkLeft = [pygame.image.load(os.path.join('mobyCha','l1.png')),pygame.image.load(os.path.join('mobyCha','l2.png')), pygame.image.load(os.path.join('mobyCha','l3.png')), pygame.image.load(os.path.join('mobyCha','l4.png')), pygame.image.load(os.path.join('mobyCha','l5.png')), pygame.image.load(os.path.join('mobyCha','l6.png')), pygame.image.load(os.path.join('mobyCha','l7.png')), pygame.image.load(os.path.join('mobyCha','l8.png')), pygame.image.load(os.path.join('mobyCha','l9.png'))]
+bg = pygame.image.load(os.path.join('mobyCha','bg.png'))
+char = pygame.image.load(os.path.join('mobyCha','front.png'))
+
 #dimensions for character
-x = 50
-y = 450
+x = 10
+y = 170
 width = 40
 height = 60
 vel = 5
 
 
 FramePerSec = pygame.time.Clock()  #set maximum framerate
-FPS = 60   #framepersec
+#FPS = 60   #framepersec
 #test_surface = pygame.Surface((100,200))
 #test_surface.fill((223, 113, 27))
 #test_surface = pygame.image.load()
@@ -43,11 +48,36 @@ FPS = 60   #framepersec
 # all_sprites.add(P1)
 
 isJumping = False
-jumpCount = 10
+jumpCount = 7
 
+#Zeynep Character Animation & Sprites AFTER CODE with jumpCount = 10
+left = False
+right = False
+walkCount = 0
+
+def redrawGameWindow(): #window
+    global walkCount
+    screen.blit(bg, (0,0))
+    pygame.display.update()
+
+    if walkCount + 1 >= 27: #27 because we have 9 sprites(png) for walking left/right, which each will be displayed in 3 frames
+        walkCount = 0
+
+    if left:
+        screen.blit(walkLeft[walkCount//3], (x,y)) # //3 removes decimal
+        walkCount += 1
+    elif right:
+        screen.blit(walkRight[walkCount//3], (x,y))
+        walkCount += 1
+    else:
+        screen.blit(char, (x,y))
+
+    pygame.display.update()
+
+#main loop
 run = True
 while run:
-    pygame.time.delay(100)
+    FramePerSec.tick(27) # set FBS to 27
 
     for event in pygame.event.get():  #gets list of all events that happen
         if event.type == pygame.QUIT:
@@ -57,18 +87,29 @@ while run:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and x > vel:
         x -= vel
-    if keys[pygame.K_RIGHT] and x < 800 - width - vel:
+        left = True
+        right = False
+    elif keys[pygame.K_RIGHT] and x < 500 - width - vel:
         x += vel
+        right = True
+        left = False
+    else:
+        right = False
+        left = False
+        walkCount = 0
 
     if not(isJumping):
-        if keys[pygame.K_UP] and y > vel:
-           y -= vel
-        if keys[pygame.K_DOWN] and y < 800 - height - vel:
-           y += vel
+        # if keys[pygame.K_UP] and y > vel:
+        #    y -= vel
+        # if keys[pygame.K_DOWN] and y < 800 - height - vel:
+        #    y += vel
         if keys[pygame.K_SPACE]:
-           isJumping = True
+            isJumping = True
+            right = False
+            left = False
+            walkCount = 0
     else:
-        if jumpCount >= -10:
+        if jumpCount >= -7:
             neg = 1
             if jumpCount < 0:  #negative number
                 neg = -1
@@ -76,16 +117,15 @@ while run:
             jumpCount -= 1
         else:
             isJumping = False
-            jumpCount = 10
+            jumpCount = 7
+
+    redrawGameWindow()
 
 
     #draw our character
     # draw all our elements
     # update everything
-    screen.fill((100, 201, 207))
-    pygame.draw.rect(screen, (255, 0, 0), (x, y, width, height))
-    pygame.display.update()
-    FramePerSec.tick(FPS)  # tells pygame that this while loop should not run faster than 60times per second
+    #(made in the above lines, Zeynep)  FramePerSec.tick(FPS)  # tells pygame that this while loop should not run faster than 60times per second
 
 pygame.quit()
 exit()
