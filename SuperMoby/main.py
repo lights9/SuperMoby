@@ -5,7 +5,7 @@ from sys import exit
 
 pygame.init() #to start game
 
-SCREENHEIGHT = 200
+SCREENHEIGHT = 192
 SCREENWIDTH = 700     #640, 480
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 screen.fill((100, 201, 207))  #64C9CF
