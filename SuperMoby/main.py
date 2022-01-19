@@ -20,7 +20,7 @@ char = pygame.image.load(os.path.join('mobyCha','front.png'))
 
 #dimensions for character
 x = 10
-y = 170
+y = 350
 width = 40
 height = 60
 vel = 5
@@ -89,7 +89,7 @@ while run:
         x -= vel
         left = True
         right = False
-    elif keys[pygame.K_RIGHT] and x < 700 - width - vel:
+    elif keys[pygame.K_RIGHT] and x < 1000 - width - vel:
         x += vel
         right = True
         left = False
