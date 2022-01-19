@@ -89,7 +89,7 @@ while run:
         x -= vel
         left = True
         right = False
-    elif keys[pygame.K_RIGHT] and x < 500 - width - vel:
+    elif keys[pygame.K_RIGHT] and x < 700 - width - vel:
         x += vel
         right = True
         left = False
