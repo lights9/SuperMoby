@@ -1,7 +1,8 @@
 import os
 import pygame
 from sys import exit
-
+# Importing Image class from PIL module
+from PIL import Image
 
 pygame.init() #to start game
 
@@ -13,14 +14,14 @@ pygame.display.set_caption('Super Moby')
 
 #Zeynep Character Animation & Sprites AFTER CODE with pygame.display.set_caption
 #images for walking left/right, staying still and background
-walkRight = [pygame.image.load(os.path.join('mobyCha','r1.png')),pygame.image.load(os.path.join('mobyCha','r2.png')), pygame.image.load(os.path.join('mobyCha','r3.png')), pygame.image.load(os.path.join('mobyCha','r4.png')), pygame.image.load(os.path.join('mobyCha','r5.png')), pygame.image.load(os.path.join('mobyCha','r6.png')), pygame.image.load(os.path.join('mobyCha','r7.png')), pygame.image.load(os.path.join('mobyCha','r8.png')), pygame.image.load(os.path.join('mobyCha','r9.png'))]
-walkLeft = [pygame.image.load(os.path.join('mobyCha','l1.png')),pygame.image.load(os.path.join('mobyCha','l2.png')), pygame.image.load(os.path.join('mobyCha','l3.png')), pygame.image.load(os.path.join('mobyCha','l4.png')), pygame.image.load(os.path.join('mobyCha','l5.png')), pygame.image.load(os.path.join('mobyCha','l6.png')), pygame.image.load(os.path.join('mobyCha','l7.png')), pygame.image.load(os.path.join('mobyCha','l8.png')), pygame.image.load(os.path.join('mobyCha','l9.png'))]
+#walkRight = [pygame.image.load(os.path.join('mobyCha','r1.png')),pygame.image.load(os.path.join('mobyCha','r2.png')), pygame.image.load(os.path.join('mobyCha','r3.png')), pygame.image.load(os.path.join('mobyCha','r4.png')), pygame.image.load(os.path.join('mobyCha','r5.png')), pygame.image.load(os.path.join('mobyCha','r6.png')), pygame.image.load(os.path.join('mobyCha','r7.png')), pygame.image.load(os.path.join('mobyCha','r8.png')), pygame.image.load(os.path.join('mobyCha','r9.png'))]
+#walkLeft = [pygame.image.load(os.path.join('mobyCha','l1.png')),pygame.image.load(os.path.join('mobyCha','l2.png')), pygame.image.load(os.path.join('mobyCha','l3.png')), pygame.image.load(os.path.join('mobyCha','l4.png')), pygame.image.load(os.path.join('mobyCha','l5.png')), pygame.image.load(os.path.join('mobyCha','l6.png')), pygame.image.load(os.path.join('mobyCha','l7.png')), pygame.image.load(os.path.join('mobyCha','l8.png')), pygame.image.load(os.path.join('mobyCha','l9.png'))]
 bg = pygame.image.load(os.path.join('backgrounds','bbbg.png'))
-char = pygame.image.load(os.path.join('mobyCha','front.png'))
+char = pygame.image.load(os.path.join('blocks','fishTile_007.png'))
 
 #dimensions for character
 x = 10
-y = 350
+y = 310
 width = 40
 height = 60
 vel = 5
