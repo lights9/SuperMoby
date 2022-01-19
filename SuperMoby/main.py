@@ -5,8 +5,8 @@ from sys import exit
 
 pygame.init() #to start game
 
-SCREENHEIGHT = 192
-SCREENWIDTH = 700     #640, 480
+SCREENHEIGHT = 500
+SCREENWIDTH = 1000     #640, 480
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 screen.fill((100, 201, 207))  #64C9CF
 pygame.display.set_caption('Super Moby')
@@ -15,7 +15,7 @@ pygame.display.set_caption('Super Moby')
 #images for walking left/right, staying still and background
 walkRight = [pygame.image.load(os.path.join('mobyCha','r1.png')),pygame.image.load(os.path.join('mobyCha','r2.png')), pygame.image.load(os.path.join('mobyCha','r3.png')), pygame.image.load(os.path.join('mobyCha','r4.png')), pygame.image.load(os.path.join('mobyCha','r5.png')), pygame.image.load(os.path.join('mobyCha','r6.png')), pygame.image.load(os.path.join('mobyCha','r7.png')), pygame.image.load(os.path.join('mobyCha','r8.png')), pygame.image.load(os.path.join('mobyCha','r9.png'))]
 walkLeft = [pygame.image.load(os.path.join('mobyCha','l1.png')),pygame.image.load(os.path.join('mobyCha','l2.png')), pygame.image.load(os.path.join('mobyCha','l3.png')), pygame.image.load(os.path.join('mobyCha','l4.png')), pygame.image.load(os.path.join('mobyCha','l5.png')), pygame.image.load(os.path.join('mobyCha','l6.png')), pygame.image.load(os.path.join('mobyCha','l7.png')), pygame.image.load(os.path.join('mobyCha','l8.png')), pygame.image.load(os.path.join('mobyCha','l9.png'))]
-bg = pygame.image.load(os.path.join('mobyCha','bg.png'))
+bg = pygame.image.load(os.path.join('backgrounds','bbbg.png'))
 char = pygame.image.load(os.path.join('mobyCha','front.png'))
 
 #dimensions for character
