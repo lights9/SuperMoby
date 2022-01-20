@@ -60,7 +60,7 @@ class Player(object):
             self.walkCount = 0
 
         if moby.left:
-            screen.blit(walkLeft[self.walkCount // 3], (self.x, moby.self.y))  # //3 removes decimal
+            screen.blit(walkLeft[self.walkCount // 3], (self.x, self.y))  # //3 removes decimal
             self.walkCount += 1
             # scrollBackground(-5,0)
 
