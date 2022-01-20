@@ -28,16 +28,16 @@ walkLeft = [pygame.image.load(os.path.join('mobyCha', 'l1.png')), pygame.image.l
 
 charMoby = pygame.image.load(os.path.join('mobyCha', 'front.png'))
 # enemy
-walkRightEnemy = [pygame.image.load(os.path.join('enemy', 'r1.png')),
-                  pygame.image.load(os.path.join('enemy', 'r2.png')),
-                  pygame.image.load(os.path.join('enemy', 'r3.png')),
-                  pygame.image.load(os.path.join('enemy', 'r4.png')),
-                  pygame.image.load(os.path.join('enemy', 'r5.png')),
-                  pygame.image.load(os.path.join('enemy', 'r6.png'))]
-walkLeftEnemy = [pygame.image.load(os.path.join('enemy', 'l1.png')), pygame.image.load(os.path.join('enemy', 'l2.png')),
-                 pygame.image.load(os.path.join('enemy', 'l3.png')), pygame.image.load(os.path.join('enemy', 'l4.png')),
-                 pygame.image.load(os.path.join('enemy', 'l5.png')), pygame.image.load(os.path.join('enemy', 'l6.png'))]
-charEnemy = pygame.image.load(os.path.join('enemy', 'front-enemy.png'))
+walkRightEnemy = [pygame.image.load(os.path.join('enemy', 'r1-e.png')),
+                  pygame.image.load(os.path.join('enemy', 'r2-e.png')),
+                  pygame.image.load(os.path.join('enemy', 'r3-e.png')),
+                  pygame.image.load(os.path.join('enemy', 'r4-e.png')),
+                  pygame.image.load(os.path.join('enemy', 'r5-e.png')),
+                  pygame.image.load(os.path.join('enemy', 'r6-e.png'))]
+walkLeftEnemy = [pygame.image.load(os.path.join('enemy', 'l1-e.png')), pygame.image.load(os.path.join('enemy', 'l2-e.png')),
+                 pygame.image.load(os.path.join('enemy', 'l3-e.png')), pygame.image.load(os.path.join('enemy', 'l4-e.png')),
+                 pygame.image.load(os.path.join('enemy', 'l5-e.png')), pygame.image.load(os.path.join('enemy', 'l6-e.png'))]
+charEnemy = pygame.image.load(os.path.join('enemy', 'front-e.png'))
 
 
 # dimensions for character
