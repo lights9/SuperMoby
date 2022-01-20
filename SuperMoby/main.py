@@ -1,8 +1,7 @@
 import os
 import pygame
 from sys import exit
-# Importing Image class from PIL module
-from PIL import Image
+
 
 pygame.init() #to start game
 
@@ -37,20 +36,6 @@ FramePerSec = pygame.time.Clock()  #set maximum framerate
 #test_surface.fill((223, 113, 27))
 #test_surface = pygame.image.load()
 
-#
-# class Player(pygame.sprite.Sprite):
-#     def __init__(self):
-#         super().__init__()
-#         self.image = pygame.Surface((50, 50))
-#         self.image.fill((128, 255, 40))
-#         # self.rect = self.image.get_rect()
-#         self.rect = self.image.get_rect(center=(10, 420))
-#     # self.rect.center = (WIDTH / 2, HEIGHT / 2)
-#
-#
-# P1 = Player()
-# all_sprites = pygame.sprite.Group()
-# all_sprites.add(P1)
 
 isJumping = False
 jumpCount = 7
