@@ -28,16 +28,16 @@ walkLeft = [pygame.image.load(os.path.join('mobyCha', 'l1.png')), pygame.image.l
 
 charMoby = pygame.image.load(os.path.join('mobyCha', 'front.png'))
 # enemy
-walkRightEnemy = [pygame.image.load(os.path.join('enemy', 'r1-e.png')),
-                  pygame.image.load(os.path.join('enemy', 'r2-e.png')),
-                  pygame.image.load(os.path.join('enemy', 'r3-e.png')),
-                  pygame.image.load(os.path.join('enemy', 'r4-e.png')),
-                  pygame.image.load(os.path.join('enemy', 'r5-e.png')),
-                  pygame.image.load(os.path.join('enemy', 'r6-e.png'))]
-walkLeftEnemy = [pygame.image.load(os.path.join('enemy', 'l1-e.png')), pygame.image.load(os.path.join('enemy', 'l2-e.png')),
-                 pygame.image.load(os.path.join('enemy', 'l3-e.png')), pygame.image.load(os.path.join('enemy', 'l4-e.png')),
-                 pygame.image.load(os.path.join('enemy', 'l5-e.png')), pygame.image.load(os.path.join('enemy', 'l6-e.png'))]
-charEnemy = pygame.image.load(os.path.join('enemy', 'front-e.png'))
+# walkRightEnemy = [pygame.image.load(os.path.join('enemy', 'r1-e.png')),
+#                   pygame.image.load(os.path.join('enemy', 'r2-e.png')),
+#                   pygame.image.load(os.path.join('enemy', 'r3-e.png')),
+#                   pygame.image.load(os.path.join('enemy', 'r4-e.png')),
+#                   pygame.image.load(os.path.join('enemy', 'r5-e.png')),
+#                   pygame.image.load(os.path.join('enemy', 'r6-e.png'))]
+# walkLeftEnemy = [pygame.image.load(os.path.join('enemy', 'l1-e.png')), pygame.image.load(os.path.join('enemy', 'l2-e.png')),
+#                  pygame.image.load(os.path.join('enemy', 'l3-e.png')), pygame.image.load(os.path.join('enemy', 'l4-e.png')),
+#                  pygame.image.load(os.path.join('enemy', 'l5-e.png')), pygame.image.load(os.path.join('enemy', 'l6-e.png'))]
+# charEnemy = pygame.image.load(os.path.join('enemy', 'front-e.png'))
 
 
 # dimensions for character
@@ -86,12 +86,55 @@ FramePerSec = pygame.time.Clock()  # set maximum framerate
 
 # class enemy
 class Enemy(object):
-    def __init__(self, x, y, width, height):
+    walkRightEnemy = [pygame.image.load(os.path.join('enemy', 'r1-e.png')),
+                      pygame.image.load(os.path.join('enemy', 'r2-e.png')),
+                      pygame.image.load(os.path.join('enemy', 'r3-e.png')),
+                      pygame.image.load(os.path.join('enemy', 'r4-e.png')),
+                      pygame.image.load(os.path.join('enemy', 'r5-e.png')),
+                      pygame.image.load(os.path.join('enemy', 'r6-e.png'))]
+    walkLeftEnemy = [pygame.image.load(os.path.join('enemy', 'l1-e.png')),
+                     pygame.image.load(os.path.join('enemy', 'l2-e.png')),
+                     pygame.image.load(os.path.join('enemy', 'l3-e.png')),
+                     pygame.image.load(os.path.join('enemy', 'l4-e.png')),
+                     pygame.image.load(os.path.join('enemy', 'l5-e.png')),
+                     pygame.image.load(os.path.join('enemy', 'l6-e.png'))]
+
+    def __init__(self, x, y, width, height, end):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.hitEnemy = (x, y, width, height)
+        self.end = end
+        self.path = [self.x, self.end]
+        self.walkCount = 0
+        self.vel = 3
+
+    def draw(self, win):
+        self.move()
+        if self.walkCount + 1 >= 18:
+            self.walkCount = 0
+        if self.vel > 0:
+            win.blit(self.walkRightEnemy[self.walkCount //3], (self.x, self.y))
+            self.walkCount += 1
+        else:
+            win.blit(self.walkLeftEnemy[self.walkCount //3], (self.x, self.y))
+            self.walkCount += 1
+
+    def move(self):
+        if self.vel > 0:
+            if self.x + self.vel < self.path[1]:
+                self.x += self.vel
+            else:
+                self.vel = self.vel * -1
+                self.walkCount = 0
+        else:
+            if self.x - self.vel > self.path[0]:
+                self.x += self.vel
+            else:
+                self.vel = self.vel * -1
+                self.walkCount = 0
+
+
 
 
 # def draw(self, win):
@@ -102,11 +145,13 @@ def redraw_game_window():  # window
     screen.blit(background, (bgX, 0))
     screen.blit(background, (bgX2, 0))
     moby.draw(screen)
+    dino.draw(screen)
     pygame.display.update()
 
 
 # main loop
 moby = Player(10, 370, 40, 60)
+dino = Enemy(10, 370, 40, 40, 930)
 speed = 27
 run = True
 while run:
@@ -169,6 +214,8 @@ while run:
 
 pygame.quit()
 exit()
+
+
 
 # #screen.blit(test_surface,(300,200))  #distance from left,top
 # for entity in all_sprites:
