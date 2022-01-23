@@ -1,7 +1,6 @@
 import os
 import pygame
 from sys import exit
-from levelEditor import *
 
 pygame.init()  # to start game
 clock = pygame.time.Clock()  # set maximum framerate
@@ -10,15 +9,12 @@ clock = pygame.time.Clock()  # set maximum framerate
 SCREENHEIGHT = 500
 SCREENWIDTH = 1000  # 640, 480
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-# screen.fill((100, 201, 207))  # 64C9CF
+#screen.fill((100, 201, 207))  # 64C9CF
 pygame.display.set_caption('Super Moby')
 background = pygame.image.load(os.path.join('backgrounds', 'bbbg.png'))
 bgX = 0  # keep track of 2 different images at certain screen to never let screen turn blank
 bgX2 = background.get_width()
 
-# def scrollBackground(x, y):
-#   background = background
-#  background.scroll(x, y)
 
 # Zeynep Character Animation & Sprites AFTER CODE with pygame.display.set_caption
 # images for walking left/right, staying still and background
@@ -30,8 +26,6 @@ walkLeft = [pygame.image.load(os.path.join('mobyCha', 'l1.png')), pygame.image.l
             pygame.image.load(os.path.join('mobyCha', 'l5.png')), pygame.image.load(os.path.join('mobyCha', 'l6.png'))]
 
 charMoby = pygame.image.load(os.path.join('mobyCha', 'front.png'))
-
-
 # enemy
 # walkRightEnemy = [pygame.image.load(os.path.join('enemy', 'r1-e.png')),
 #                   pygame.image.load(os.path.join('enemy', 'r2-e.png')),
@@ -110,10 +104,10 @@ class Enemy(object):
         if self.walkCount + 1 >= 18:
             self.walkCount = 0
         if self.vel > 0:
-            win.blit(self.walkRightEnemy[self.walkCount // 3], (self.x, self.y))
+            win.blit(self.walkRightEnemy[self.walkCount //3], (self.x, self.y))
             self.walkCount += 1
         else:
-            win.blit(self.walkLeftEnemy[self.walkCount // 3], (self.x, self.y))
+            win.blit(self.walkLeftEnemy[self.walkCount //3], (self.x, self.y))
             self.walkCount += 1
 
     def move(self):
@@ -129,6 +123,7 @@ class Enemy(object):
             else:
                 self.vel = self.vel * -1
                 self.walkCount = 0
+
 
 
 def redraw_game_window():  # window
@@ -195,6 +190,7 @@ while run:
             moby.isJumping = False
             moby.jumpCount = 7
 
+    pygame.display.update()
     clock.tick(speed)  # set FBS to 27
 
     # draw our character
@@ -205,3 +201,4 @@ while run:
 
 pygame.quit()
 exit()
+
