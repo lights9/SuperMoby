@@ -42,23 +42,26 @@ class Player(object):
         self.left = False
         self.right = False
         self.walkCount = 0
+        #self.standing = True;
+        #self.hitbox = (self.x +20, self.y, 28, 60)
 
     def draw(self, screen):
 
         if self.walkCount + 1 >= 18:  # 18 because we have 9 sprites(png) for walking left/right, which each will be displayed in 3 frames
             self.walkCount = 0
 
-        if moby.left:
+        if self.left:
             screen.blit(walkLeft[self.walkCount // 3], (self.x, self.y))  # //3 removes decimal
             self.walkCount += 1
             # scrollBackground(-5,0)
 
-        elif moby.right:
+        elif self.right:
             screen.blit(walkRight[self.walkCount // 3], (self.x, self.y))
             self.walkCount += 1
             # scrollBackground(5, 0)
         else:
             screen.blit(charMoby, (self.x, self.y))
+            #pygame.draw.rect(screen, (255, 0, 0), (self.x+10, self.y+5, self.width, self.height), 2)
 
 
 # Zeynep Character Animation & Sprites AFTER CODE with jumpCount = 10
