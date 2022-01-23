@@ -9,16 +9,16 @@ clock = pygame.time.Clock()
 FPS = 60  # Framerate
 
 # game window
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 500
-LOWER_MARGIN = 100
-SIDE_MARGIN = 250
+SCREEN_WIDTH = 700 #1000
+SCREEN_HEIGHT = 700 #500
+LOWER_MARGIN = 70 #100
+SIDE_MARGIN = 350 #250
 
 screen = pygame.display.set_mode((SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT + LOWER_MARGIN))
 pygame.display.set_caption('Level Editor')
 
 # define game variables
-ROWS = 7  # 16 or 10
+ROWS = 14 #7  # 16 or 10
 MAX_COLS = 100 # 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 TILE_TYPES = 11 #number of items

@@ -6,12 +6,13 @@ pygame.init()  # to start game
 clock = pygame.time.Clock()  # set maximum framerate
 # FPS = 60   #framepersec
 
-SCREENHEIGHT = 500
-SCREENWIDTH = 1000  # 640, 480
+SCREENHEIGHT = 700
+SCREENWIDTH = 700  # 640, 480
+tile_size = 50
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 #screen.fill((100, 201, 207))  # 64C9CF
 pygame.display.set_caption('Super Moby')
-background = pygame.image.load(os.path.join('backgrounds', 'bbbg.png'))
+background = pygame.image.load(os.path.join('backgrounds', 'bbbgQUA.png'))
 bgX = 0  # keep track of 2 different images at certain screen to never let screen turn blank
 bgX2 = background.get_width()
 
@@ -127,6 +128,64 @@ def redraw_game_window():  # window
     dino.draw(screen)
     pygame.display.update()
 
+class World():
+    def __init__(self, data):
+        self.tile_list = []
+        sand_img = pygame.image.load(os.path.join('objects2', '0.png'))
+        shell_img = pygame.image.load(os.path.join('objects2', '1.png'))
+        star_img = pygame.image.load(os.path.join('objects2', '2.png'))
+
+        row_count =0
+        for row in data:
+            col_count =0
+            for tile in row:
+                if tile ==1:
+                    img = pygame.transform.scale(sand_img,(tile_size, tile_size))
+                    img_rect = img.get_rect() #for collision
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
+                if tile == 2:
+                    img = pygame.transform.scale(shell_img, (tile_size, tile_size))
+                    img_rect = img.get_rect()  # for collision
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
+                if tile == 3:
+                    img = pygame.transform.scale(star_img, (tile_size, tile_size))
+                    img_rect = img.get_rect()  # for collision
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
+                col_count += 1
+            row_count += 1
+
+    def draw(self):
+        for tile in self.tile_list:
+            screen.blit(tile[0], tile[1])
+
+
+
+world_data= [
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+]
+
+
+world = World(world_data)
 
 # main loop
 moby = Player(10, 370, 40, 60)
@@ -182,6 +241,8 @@ while run:
         else:
             moby.isJumping = False
             moby.jumpCount = 7
+
+    world.draw()
 
     pygame.display.update()
     clock.tick(speed)  # set FBS to 27
