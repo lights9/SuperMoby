@@ -18,6 +18,7 @@ bgX2 = background.get_width()
 
 # Zeynep Character Animation & Sprites AFTER CODE with pygame.display.set_caption
 # images for walking left/right, staying still and background
+# load player image
 walkRight = [pygame.image.load(os.path.join('mobyCha', 'r1.png')), pygame.image.load(os.path.join('mobyCha', 'r2.png')),
              pygame.image.load(os.path.join('mobyCha', 'r3.png')), pygame.image.load(os.path.join('mobyCha', 'r4.png')),
              pygame.image.load(os.path.join('mobyCha', 'r5.png')), pygame.image.load(os.path.join('mobyCha', 'r6.png'))]
@@ -26,17 +27,6 @@ walkLeft = [pygame.image.load(os.path.join('mobyCha', 'l1.png')), pygame.image.l
             pygame.image.load(os.path.join('mobyCha', 'l5.png')), pygame.image.load(os.path.join('mobyCha', 'l6.png'))]
 
 charMoby = pygame.image.load(os.path.join('mobyCha', 'front.png'))
-# enemy
-# walkRightEnemy = [pygame.image.load(os.path.join('enemy', 'r1-e.png')),
-#                   pygame.image.load(os.path.join('enemy', 'r2-e.png')),
-#                   pygame.image.load(os.path.join('enemy', 'r3-e.png')),
-#                   pygame.image.load(os.path.join('enemy', 'r4-e.png')),
-#                   pygame.image.load(os.path.join('enemy', 'r5-e.png')),
-#                   pygame.image.load(os.path.join('enemy', 'r6-e.png'))]
-# walkLeftEnemy = [pygame.image.load(os.path.join('enemy', 'l1-e.png')), pygame.image.load(os.path.join('enemy', 'l2-e.png')),
-#                  pygame.image.load(os.path.join('enemy', 'l3-e.png')), pygame.image.load(os.path.join('enemy', 'l4-e.png')),
-#                  pygame.image.load(os.path.join('enemy', 'l5-e.png')), pygame.image.load(os.path.join('enemy', 'l6-e.png'))]
-# charEnemy = pygame.image.load(os.path.join('enemy', 'front-e.png'))
 
 
 # dimensions for character

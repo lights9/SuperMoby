@@ -19,9 +19,9 @@ pygame.display.set_caption('Level Editor')
 
 # define game variables
 ROWS = 7  # 16 or 10
-MAX_COLS = 100  # 150
+MAX_COLS = 100 # 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = 6
+TILE_TYPES = 11 #number of items
 level = 0
 current_tile = 0
 scroll_left = False
@@ -34,10 +34,10 @@ main_background = pygame.image.load('backgrounds/bbbg.png').convert_alpha()
 save_img = pygame.image.load('assets/save_btn.png').convert_alpha()
 load_img = pygame.image.load('assets/load_btn.png').convert_alpha()
 
-# store blocks in a list
+# store objects2 in a list
 img_list = []
 for x in range(TILE_TYPES):
-    img = pygame.image.load(f'blocks/{x}.png')
+    img = pygame.image.load(f'objects2/{x}.png')
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 
@@ -72,7 +72,7 @@ def draw_text(text, font, text_col, x, y):
 def draw_bg():
     screen.fill(GREEN)
     width = main_background.get_width()
-    for x in range(4):
+    for x in range(2):
         screen.blit(main_background, ((x * width) - scroll * 0.5, 0))
 
 
