@@ -12,7 +12,7 @@ tile_size = 50
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 #screen.fill((100, 201, 207))  # 64C9CF
 pygame.display.set_caption('Super Moby')
-background = pygame.image.load(os.path.join('backgrounds', 'bbbgQUA.png'))
+background = pygame.image.load(os.path.join('backgrounds', 'probe.jpg'))
 bgX = 0  # keep track of 2 different images at certain screen to never let screen turn blank
 bgX2 = background.get_width()
 
@@ -135,25 +135,25 @@ class World():
         shell_img = pygame.image.load(os.path.join('objects2', '1.png'))
         star_img = pygame.image.load(os.path.join('objects2', '2.png'))
 
-        row_count =0
+        row_count =-1
         for row in data:
             col_count =0
             for tile in row:
-                if tile ==1:
+                if tile ==0:
                     img = pygame.transform.scale(sand_img,(tile_size, tile_size))
                     img_rect = img.get_rect() #for collision
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
-                if tile == 2:
+                if tile == 1:
                     img = pygame.transform.scale(shell_img, (tile_size, tile_size))
                     img_rect = img.get_rect()  # for collision
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
-                if tile == 3:
+                if tile == 2:
                     img = pygame.transform.scale(star_img, (tile_size, tile_size))
                     img_rect = img.get_rect()  # for collision
                     img_rect.x = col_count * tile_size
@@ -173,15 +173,18 @@ world_data= [
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,2],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
 [0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
-[0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
+[0,0,0,0,0,2,0,1,2,0,0,0,0,0],
 ]
 
 
