@@ -143,7 +143,7 @@ class Player():
         #     #y collison
         #     if tile[1].colliderect(self.rect.x, self.rect.y + dy)
 
-        pygame.draw.rect(screen, (255,255,255), self.rect)
+        pygame.draw.rect(screen, (255,255,255), self.rect, 2)
 
 # Zeynep Character Animation & Sprites AFTER CODE with jumpCount = 10
 
@@ -249,6 +249,7 @@ class World():
     def draw(self):
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
+            pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
 
 
@@ -281,17 +282,17 @@ world = World(world_data)
 run = True
 while run:
     # redraw_game_window()
-    bgX -= 1.4
-    bgX2 -= 1.4
-    if bgX < background.get_width() * -1:
-        bgX = background.get_width()
-
-    if bgX2 < background.get_width() * -1:
-        bgX2 = background.get_width()
-
-    for event in pygame.event.get():  # gets list of all events that happen
-        if event.type == pygame.QUIT:
-            run = False
+    # bgX -= 1.4
+    # bgX2 -= 1.4
+    # if bgX < background.get_width() * -1:
+    #     bgX = background.get_width()
+    #
+    # if bgX2 < background.get_width() * -1:
+    #     bgX2 = background.get_width()
+    #
+    # for event in pygame.event.get():  # gets list of all events that happen
+    #     if event.type == pygame.QUIT:
+    #         run = False
 
     # basics for moving
     # keys = pygame.key.get_pressed()
@@ -331,13 +332,17 @@ while run:
     #         moby.isJumping = False
     #         moby.jumpCount = 7
 
-
-
+    screen.blit(background, (0, 0))
     world.draw()
     player.update()
 
     pygame.display.update()
     clock.tick(fps)  # set FBS to 27
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+
+    pygame.display.update()
 
     # draw our character
     # draw all our elements
