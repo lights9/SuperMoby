@@ -88,9 +88,11 @@ class Player():
             if key[pygame.K_LEFT]:
                 dx -= 5
                 self.counter += 1
+                self.mirror = -1
             if key[pygame.K_RIGHT]:
                 dx += 5
                 self.counter += 1
+                self.mirror = 1
             if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
                 self.counter = 0
                 self.index = 0
@@ -135,14 +137,20 @@ class Player():
             if pygame.sprite.spritecollide(self, dino_group, False):
                 game_over = -1
 
-        self.rect.x += dx
-        self.rect.y += dy
+            self.rect.x += dx
+            self.rect.y += dy
 
-        if self.rect.bottom > SCREENHEIGHT:
-            self.rect.bottom = SCREENHEIGHT
-            dx = 0
+        elif game_over == -1:
+            self.image = self.dead_image
+            if self.rect.y > 200:
+                self.rect.y -=5
+
+            # if self.rect.bottom > SCREENHEIGHT:
+            #     self.rect.bottom = SCREENHEIGHT
+            #     dx = 0
 
         screen.blit(self.image, self.rect)
+        return game_over
 
         # def draw(self, screen):
         #
@@ -166,7 +174,7 @@ class Player():
         #     #y collison
         #     if tile[1].colliderect(self.rect.x, self.rect.y + dy)
 
-        pygame.draw.rect(screen, (255, 255, 255), self.rect, 2)
+        #pygame.draw.rect(screen, (255, 255, 255), self.rect, 2)
 
     # Zeynep Character Animation & Sprites AFTER CODE with jumpCount = 10
 
@@ -241,6 +249,7 @@ class Player():
             img_left = pygame.image.load(f'mobyCha/l{num}.png')
             self.images_right.append(img_right)
             self.images_left.append(img_left)
+        self.dead_image = pygame.image.load('mobyCha/dead.png')
         self.image = self.images_right[self.index]
         self.rect = self.image.get_rect()
         self.x = x  # 10
@@ -251,8 +260,6 @@ class Player():
         self.height = self.image.get_height()  # 60
         self.vel = 0
         self.isJumping = False
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
         self.in_air = True
         self.mirror = 0
 
@@ -299,13 +306,13 @@ class World():
     def draw(self):
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
-            pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+            #pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
 
 class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Sprite class (Sprite has some functions)
     def __init__(self, x, y):  # constructor
         pygame.sprite.Sprite.__init__(self)  # calling constructor from superclass
-        self.image = pygame.image.load('...')
+        self.image = pygame.image.load('enemy/front-e.png')
         # position enemy with rectangle
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -336,9 +343,9 @@ world_data = [
     [0, -1, -1, -1, -1, -1, -1, -1, 2, 0, -1, -1, -1, 2],
     [0, -1, -1, -1, -1, -1, -1, -1, -1, 4, 5, -1, 1, 0],
     [2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0],
-    [1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 1, 0, 0, 0],
+    [1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 0, 0, 0],
     [0, -1, -1, -1, -1, 0, 1, -1, -1, -1, -1, -1, -1, 0],
-    [0, -1, -1, -1, 0, 0, 1, -1, -1, -1, -1, -1, -1, 1],
+    [0, -1, -1, -1, 0, 0, 1, -1, -1, -1, -1, -1, 3, 1],
     [0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
 ]
 
