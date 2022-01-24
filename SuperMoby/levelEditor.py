@@ -32,7 +32,7 @@ scroll = 0
 scroll_speed = 1
 
 # load images
-main_background = pygame.image.load('backgrounds/probe.jpg').convert_alpha()
+main_background = pygame.image.load('backgrounds/bbbg.png').convert_alpha()
 save_img = pygame.image.load('assets/save_btn.png').convert_alpha()
 load_img = pygame.image.load('assets/load_btn.png').convert_alpha()
 

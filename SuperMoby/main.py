@@ -12,12 +12,21 @@ fps = 60  # framepersec
 SCREENHEIGHT = 700
 SCREENWIDTH = 700  # 640, 480
 
+#define font
+font = pygame.font.SysFont('Bauhaus 93', 30)
+font_score = pygame.font.SysFont('Bauhaus 93', 30)
+
+#define colours
+white = (255, 255, 255)
+blue = (0, 0, 255)
+
 # define variables
 tile_size = 50
 game_over = 0
 main_menu = True
 level = 1
 max_levels = 2
+score = 0
 
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 #screen.fill((100, 201, 207))  # 64C9CF
@@ -28,6 +37,11 @@ background = pygame.image.load(os.path.join('backgrounds', 'bbbg.png'))
 restart_img = pygame.image.load(os.path.join('assets', 'restart_btn.png'))
 start_img = pygame.image.load('assets/start_btn.png')
 exit_img = pygame.image.load('assets/exit_btn.png')
+
+
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
 
 
 # function to reset level
@@ -148,8 +162,10 @@ class Player():
             # check for collision with enemies
             if pygame.sprite.spritecollide(self, dino_group, False):
                 game_over = -1
+                for entity in dino_group:
+                    entity.kill()
 
-            # check for collision with flag
+                    # check for collision with flag
             if pygame.sprite.spritecollide(self, flag_group, False):
                 game_over = 1
 
@@ -158,6 +174,7 @@ class Player():
 
         elif game_over == -1:
             self.image = self.dead_image
+            draw_text('GAME OVER', font, blue, (SCREENWIDTH // 2) - 200, SCREENHEIGHT // 2)
             if self.rect.y > 2000:
                 self.rect.y -= 5
 
@@ -202,6 +219,15 @@ class Flag(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('objects2/8.png')
+        self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+
+
 
 class World():
     def __init__(self, data):
@@ -238,6 +264,9 @@ class World():
                 if tile == 6:
                     flag = Flag(col_count * tile_size, row_count * tile_size - (tile_size // 2))
                     flag_group.add(flag)
+                if tile == 8:
+                    coin = Coin(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
+                    coin_group.add(coin)
                 if tile == 11:
                     dino = Enemy(col_count * tile_size, row_count * tile_size + 15)
                     # groups = .add
@@ -295,6 +324,10 @@ class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Spri
 player = Player(100, SCREENHEIGHT - 130)
 dino_group = pygame.sprite.Group()
 flag_group = pygame.sprite.Group()
+coin_group = pygame.sprite.Group()
+# create coin for showing score
+score_coin = Coin(tile_size // 2, tile_size // 2)
+coin_group.add(score_coin)
 
 # load in level data and create world
 if path.exists(f'level{level}_data'):
@@ -328,9 +361,15 @@ while run:
 
         if game_over == 0:
             dino_group.update()
+            #update score
+            # check if a coin has been collected
+            if pygame.sprite.spritecollide(player, coin_group, True):
+                score += 1  #increase score by one
+            draw_text('X ' + str(score), font_score, blue, tile_size - 10, 10)
 
         # works because draw methode is in sprite class included
         dino_group.draw(screen)
+        coin_group.draw(screen)
         flag_group.draw(screen)
 
         game_over = player.update(game_over)
@@ -341,6 +380,7 @@ while run:
                 world_data = []
                 world = reset_level(level)
                 game_over = 0
+                score = 0
 
         # if player has completed the level
         if game_over == 1:
@@ -352,12 +392,14 @@ while run:
                 world = reset_level(level)
                 game_over = 0
             else:
+                draw_text('CONGRATULATIONS YOU WON!!', font, blue, (SCREENWIDTH // 2) - 260, SCREENHEIGHT // 2)
                 if restart_btn.draw():
                     level = 1
                     # reset level
                     world_data = []
                     world = reset_level(level)
                     game_over = 0
+                    score = 0
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
