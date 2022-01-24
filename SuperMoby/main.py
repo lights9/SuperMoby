@@ -14,8 +14,8 @@ screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 #screen.fill((100, 201, 207))  # 64C9CF
 pygame.display.set_caption('Super Moby')
 background = pygame.image.load(os.path.join('backgrounds', 'probe.jpg'))
-bgX = 0  # keep track of 2 different images at certain screen to never let screen turn blank
-bgX2 = background.get_width()
+#bgX = 0  # keep track of 2 different images at certain screen to never let screen turn blank
+#bgX2 = background.get_width()
 
 
 # Zeynep Character Animation & Sprites AFTER CODE with pygame.display.set_caption
