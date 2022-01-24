@@ -14,7 +14,7 @@ FPS = 60  # Framerate
 SCREEN_WIDTH = 700 #1000
 SCREEN_HEIGHT = 700 #500
 LOWER_MARGIN = 70 #100
-SIDE_MARGIN = 350 #250
+SIDE_MARGIN = 100 #250
 
 screen = pygame.display.set_mode((SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT + LOWER_MARGIN))
 pygame.display.set_caption('Level Editor')
@@ -125,12 +125,12 @@ while run:
     # save and load data
 
     # load and save level
-    if save_button.draw:
+    if save_button.draw(screen):
         # save level data
         pickle_out = open(f'level{level}_data', 'wb')
         pickle.dump(world_data, pickle_out)
         pickle_out.close()
-    if load_button.draw:
+    if load_button.draw(screen):
         # load in level data
         if path.exists(f'level{level}_data'):
             pickle_in = open(f'level{level}_data', 'rb')
