@@ -191,8 +191,8 @@ world_data= [
 world = World(world_data)
 
 # main loop
-moby = Player(10, 370, 40, 60)
-dino = Enemy(10, 370, 40, 40, 930)
+moby = Player(40, 585, 40, 60)
+dino = Enemy(40, 585, 40, 40, 930)
 speed = 27
 run = True
 while run:

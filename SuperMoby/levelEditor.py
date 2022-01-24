@@ -18,8 +18,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT + LO
 pygame.display.set_caption('Level Editor')
 
 # define game variables
-ROWS = 14 #7  # 16 or 10
-MAX_COLS = 100 # 150
+ROWS = 15 #7  # 16 or 10
+MAX_COLS = 14 # 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 TILE_TYPES = 11 #number of items
 level = 0
@@ -30,7 +30,7 @@ scroll = 0
 scroll_speed = 1
 
 # load images
-main_background = pygame.image.load('backgrounds/bbbg.png').convert_alpha()
+main_background = pygame.image.load('backgrounds/probe.jpg').convert_alpha()
 save_img = pygame.image.load('assets/save_btn.png').convert_alpha()
 load_img = pygame.image.load('assets/load_btn.png').convert_alpha()
 
