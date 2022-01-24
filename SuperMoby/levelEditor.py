@@ -14,7 +14,7 @@ FPS = 60  # Framerate
 SCREEN_WIDTH = 700 #1000
 SCREEN_HEIGHT = 700 #500
 LOWER_MARGIN = 70 #100
-SIDE_MARGIN = 100 #250
+SIDE_MARGIN = 200 #250
 
 screen = pygame.display.set_mode((SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT + LOWER_MARGIN))
 pygame.display.set_caption('Level Editor')
@@ -23,7 +23,7 @@ pygame.display.set_caption('Level Editor')
 ROWS = 15 #7  # 16 or 10
 MAX_COLS = 14 # 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = 11 #number of items
+TILE_TYPES = 12 #number of items
 level = 0
 current_tile = 0
 scroll_left = False

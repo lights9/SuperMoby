@@ -16,7 +16,7 @@ SCREENWIDTH = 700  # 640, 480
 tile_size = 50
 game_over = 0
 main_menu = True
-level = 0
+level = 1
 max_levels = 2
 
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
@@ -192,6 +192,16 @@ class Player():
         self.mirror = 0
 
 
+class Flag(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('objects2/6.png')
+        self.image = pygame.transform.scale(img, (tile_size, int(tile_size * 1.5)))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+
 class World():
     def __init__(self, data):
         self.tile_list = []
@@ -224,13 +234,13 @@ class World():
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
-                if tile == 3:
-                    dino = Enemy(col_count * tile_size, row_count * tile_size + 15)
-                    # groups = .add
-                    dino_group.add(dino)
                 if tile == 6:
                     flag = Flag(col_count * tile_size, row_count * tile_size - (tile_size // 2))
                     flag_group.add(flag)
+                if tile == 11:
+                    dino = Enemy(col_count * tile_size, row_count * tile_size + 15)
+                    # groups = .add
+                    dino_group.add(dino)
                 col_count += 1
             row_count += 1
 
@@ -243,7 +253,7 @@ class World():
 class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Sprite class (Sprite has some functions)
     def __init__(self, x, y):  # constructor
         pygame.sprite.Sprite.__init__(self)  # calling constructor from superclass
-        self.image = pygame.image.load('enemy/front-e.png')
+        self.image = pygame.image.load('objects2/11.png')
         # position enemy with rectangle
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -262,32 +272,23 @@ class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Spri
             self.move_counter *= -1
 
 
-world_data = [
-    [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
-    [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6, 0],
-    [1, -1, -1, -1, -1, -1, 2, 0, 1, 0, -1, -1, 0, 1],
-    [1, 0, -1, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2],
-    [0, -1, 0, 0, 2, -1, -1, -1, -1, -1, -1, -1, -1, 0],
-    [0, 2, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, 0],
-    [0, -1, -1, -1, -1, -1, -1, 2, 0, 1, 2, -1, -1, 0],
-    [0, -1, -1, -1, -1, -1, -1, -1, 2, 0, -1, -1, -1, 2],
-    [0, -1, -1, -1, -1, -1, -1, -1, -1, 4, 5, -1, 1, 0],
-    [2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0],
-    [1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 0, 0, 0],
-    [0, -1, -1, -1, -1, 0, 1, -1, -1, -1, -1, -1, -1, 0],
-    [0, -1, -1, -1, 0, 0, 1, -1, -1, -1, -1, -1, 3, 1],
-    [0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
-]
-
-class Flag(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('objects2/6.png')
-        self.image = pygame.transform.scale(img, (tile_size, int(tile_size * 1.5)))
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+# world_data = [
+#     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
+#     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6, 0],
+#     [1, -1, -1, -1, -1, -1, 2, 0, 1, 0, -1, -1, 0, 1],
+#     [1, 0, -1, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+#     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2],
+#     [0, -1, 0, 0, 2, -1, -1, -1, -1, -1, -1, -1, -1, 0],
+#     [0, 2, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, 0],
+#     [0, -1, -1, -1, -1, -1, -1, 2, 0, 1, 2, -1, -1, 0],
+#     [0, -1, -1, -1, -1, -1, -1, -1, 2, 0, -1, -1, -1, 2],
+#     [0, -1, -1, -1, -1, -1, -1, -1, -1, 4, 5, -1, 1, 0],
+#     [2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0],
+#     [1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 0, 0, 0],
+#     [0, -1, -1, -1, -1, 0, 1, -1, -1, -1, -1, -1, -1, 0],
+#     [0, -1, -1, -1, 0, 0, 1, -1, -1, -1, -1, -1, 3, 1],
+#     [0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+# ]
 
 
 player = Player(100, SCREENHEIGHT - 130)
@@ -302,8 +303,8 @@ world = World(world_data)
 
 # create buttons
 restart_btn = Button(SCREENWIDTH // 2 - 50, SCREENHEIGHT // 2 + 100, restart_img)
-start_button = Button(SCREENWIDTH // 2 - 350, SCREENHEIGHT // 2, start_img)
-exit_button = Button(SCREENWIDTH // 2 + 150, SCREENHEIGHT // 2, exit_img)
+start_button = Button(SCREENWIDTH // 2 - 300, SCREENHEIGHT // 2, start_img)
+exit_button = Button(SCREENWIDTH // 2 + 40, SCREENHEIGHT // 2, exit_img)
 
 # main loop
 # moby = Player(40, 585, 40, 60)
@@ -315,10 +316,12 @@ while run:
 
     screen.blit(screen, (0, 0))
     if main_menu == True:
+        screen.fill(color='Black')
         if exit_button.draw():
             run = False
         if start_button.draw():
             main_menu = False
+            screen.fill(((100, 201, 207)))
     else:
         world.draw()
 
