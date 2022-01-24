@@ -244,7 +244,7 @@ class Player():
         self.images_left = []
         self.index = 0
         self.counter = 0
-        for num in range(1, 7):
+        for num in range(0, 7):
             img_right = pygame.image.load(f'mobyCha/r{num}.png')
             img_left = pygame.image.load(f'mobyCha/l{num}.png')
             self.images_right.append(img_right)
