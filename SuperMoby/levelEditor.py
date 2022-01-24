@@ -1,6 +1,8 @@
 import pygame
 import button2
 import csv
+from os import path
+
 import pickle
 
 pygame.init()
@@ -121,21 +123,33 @@ while run:
     draw_text('Press UP or DOWN to change level', font, WHITE, 10, SCREEN_HEIGHT + LOWER_MARGIN - 60)
 
     # save and load data
-    if save_button.draw(screen):
+
+    # load and save level
+    if save_button.draw():
         # save level data
-        with open(f'level{level}_data.csv', 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile, delimiter=',')
-            for row in world_data:
-                writer.writerow(row)
-    if load_button.draw(screen):
+        pickle_out = open(f'level{level}_data', 'wb')
+        pickle.dump(world_data, pickle_out)
+        pickle_out.close()
+    if load_button.draw():
         # load in level data
-        # reset scroll back to the start of the level
-        scroll = 0
-        with open(f'level{level}_data.csv', newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            for x, row in enumerate(reader):
-                for y, tile in enumerate(row):
-                    world_data[x][y] = int(tile)
+        if path.exists(f'level{level}_data'):
+            pickle_in = open(f'level{level}_data', 'rb')
+            world_data = pickle.load(pickle_in)
+    # if save_button.draw(screen):
+    #     # save level data
+    #     with open(f'level{level}_data.csv', 'w', newline='') as csvfile:
+    #         writer = csv.writer(csvfile, delimiter=',')
+    #         for row in world_data:
+    #             writer.writerow(row)
+    # if load_button.draw(screen):
+    #     # load in level data
+    #     # reset scroll back to the start of the level
+    #     scroll = 0
+    #     with open(f'level{level}_data.csv', newline='') as csvfile:
+    #         reader = csv.reader(csvfile, delimiter=',')
+    #         for x, row in enumerate(reader):
+    #             for y, tile in enumerate(row):
+    #                 world_data[x][y] = int(tile)
 
         # alternative pickle method
         #scroll = 0
