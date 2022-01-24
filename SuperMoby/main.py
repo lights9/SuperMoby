@@ -40,7 +40,7 @@ class Player():
         self.images_left = []
         self.index = 0
         self.counter = 0
-        for num in range(1, 7):
+        for num in range(0, 7):
             img_right = pygame.image.load(f'mobyCha/r{num}.png')
             img_left = pygame.image.load(f'mobyCha/l{num}.png')
             self.images_right.append(img_right)
@@ -57,6 +57,7 @@ class Player():
         self.isJumping = False
         self.width = self.image.get_width()
         self.height = self.image.get_height()
+        self.mirror=0
 
         # self.jumpCount = 7
         # self.left = False
@@ -79,13 +80,18 @@ class Player():
         if key[pygame.K_LEFT]:
             dx -= 5
             self.counter += 1
+            self.mirror =-1
         if key[pygame.K_RIGHT]:
             dx += 5
             self.counter += 1
+            self.mirror = 1
         if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
             self.counter = 0
             self.index = 0
-            self.image = self.images_right[self.index]
+            if self.mirror ==1:
+                self.image= self.images_right[self.index]
+            if self.mirror == -1:
+                self.image = self.images_left[self.index]
 
         if self.counter > animation:
             self.counter = 0
@@ -93,6 +99,10 @@ class Player():
             if self.index >= len(self.images_right):
                 self.index = 0
             self.image = self.images_right[self.index]
+            if self.mirror == 1:
+                self.image = self.images_right[self.index]
+            if self.mirror == -1:
+                self.image = self.images_left[self.index]
 
         self.vel += 1
         if self.vel > 15:
@@ -143,7 +153,7 @@ class Player():
         #     #y collison
         #     if tile[1].colliderect(self.rect.x, self.rect.y + dy)
 
-        pygame.draw.rect(screen, (255, 255, 255), self.rect, 2)
+        #pygame.draw.rect(screen, (255, 255, 255), self.rect, 2)
 
 
 # Zeynep Character Animation & Sprites AFTER CODE with jumpCount = 10
@@ -249,7 +259,7 @@ class World():
     def draw(self):
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
-            pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+            #pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
 
 world_data = [
@@ -260,8 +270,8 @@ world_data = [
     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2],
     [0, -1, 0, 0, 2, -1, -1, -1, -1, -1, -1, -1, -1, 0],
     [0, 2, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, 0],
-    [0, -1, -1, -1, -1, -1, -1, 2, 0, 1, 2, -1, -1, 0],
-    [0, -1, -1, -1, -1, -1, -1, -1, 2, 0, -1, -1, -1, 2],
+    [0, -1, -1, -1, -1, -1, -1, 2, 0, 1, -1, -1, -1, 0],
+    [0, -1, -1, -1, -1, -1, -1, -1, 2, -1, -1, -1, -1, 2],
     [0, -1, -1, -1, -1, -1, -1, -1, -1, 4, 5, -1, 1, 0],
     [2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0],
     [1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 1, 0, 0, 0],
