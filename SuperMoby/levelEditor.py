@@ -99,8 +99,8 @@ def draw_world():
 # create buttons
 save_button = button2.Button(SCREEN_WIDTH // 2, SCREEN_HEIGHT + LOWER_MARGIN - 50, save_img, 1)
 load_button = button2.Button(SCREEN_WIDTH // 2 + 200, SCREEN_HEIGHT + LOWER_MARGIN - 50, load_img, 1)
-# make button list
 
+# make button list
 button_list = []
 button_col = 0
 button_row = 0
@@ -125,12 +125,12 @@ while run:
     # save and load data
 
     # load and save level
-    if save_button.draw():
+    if save_button.draw:
         # save level data
         pickle_out = open(f'level{level}_data', 'wb')
         pickle.dump(world_data, pickle_out)
         pickle_out.close()
-    if load_button.draw():
+    if load_button.draw:
         # load in level data
         if path.exists(f'level{level}_data'):
             pickle_in = open(f'level{level}_data', 'rb')
