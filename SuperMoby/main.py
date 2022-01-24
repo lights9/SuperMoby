@@ -20,11 +20,11 @@ level = 1
 max_levels = 2
 
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-screen.fill((100, 201, 207))  # 64C9CF
+#screen.fill((100, 201, 207))  # 64C9CF
 pygame.display.set_caption('Super Moby')
 
 # load images
-#background = pygame.image.load(os.path.join('backgrounds', 'probe.jpg'))
+background = pygame.image.load(os.path.join('backgrounds', 'bbbg.png'))
 restart_img = pygame.image.load(os.path.join('assets', 'restart_btn.png'))
 start_img = pygame.image.load('assets/start_btn.png')
 exit_img = pygame.image.load('assets/exit_btn.png')
@@ -314,14 +314,14 @@ run = True
 while run:
     clock.tick(fps)  # set FBS to 27
 
-    screen.blit(screen, (0, 0))
+    screen.blit(background, (0, 0))
     if main_menu == True:
         screen.fill(color='Black')
         if exit_button.draw():
             run = False
         if start_button.draw():
             main_menu = False
-            screen.fill(((100, 201, 207)))
+            #screen.fill(((100, 201, 207)))
     else:
         world.draw()
 
