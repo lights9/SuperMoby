@@ -46,7 +46,7 @@ def draw_text(text, font, text_col, x, y):
 
 # function to reset level
 def reset_level(level):
-    player.reset(100, SCREENHEIGHT - 130)
+    player.reset(80, SCREENHEIGHT - 130)
     dino_group.empty()
     flag_group.empty()
 
@@ -321,7 +321,7 @@ class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Spri
 # ]
 
 
-player = Player(100, SCREENHEIGHT - 130)
+player = Player(80, SCREENHEIGHT - 130)
 dino_group = pygame.sprite.Group()
 flag_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
