@@ -151,11 +151,7 @@ while run:
     #             for y, tile in enumerate(row):
     #                 world_data[x][y] = int(tile)
 
-        # alternative pickle method
-        #scroll = 0
-        #world_data = []
-        #pickle_in = open(f'level{level}_data', 'rb')
-        #world_data = pickle.load(pickle_in)
+
 
     # draw block panel and blocks
     pygame.draw.rect(screen, GREEN, (SCREEN_WIDTH, 0, SIDE_MARGIN, SCREEN_HEIGHT))
