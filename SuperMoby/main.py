@@ -2,10 +2,16 @@ import os
 from sys import exit
 from os import path
 import pickle
+from pygame import mixer
+
 
 import pygame
 
-pygame.init()  # to start game
+
+pygame.mixer.pre_init(44100, -16, 2, 512)
+mixer.init()
+pygame.init()  # to start
+
 clock = pygame.time.Clock()  # set maximum framerate
 fps = 60  # framepersec
 
@@ -24,8 +30,9 @@ blue = (0, 0, 255)
 tile_size = 50
 game_over = 0
 main_menu = True
-level = 1
-max_levels = 2
+level = 0
+max_levels = 3
+
 score = 0
 
 screen = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
@@ -38,6 +45,18 @@ restart_img = pygame.image.load(os.path.join('assets', 'restart_btn.png'))
 start_img = pygame.image.load('assets/start_btn.png')
 exit_img = pygame.image.load('assets/exit_btn.png')
 
+
+# load sounds
+pygame.mixer.music.load('sounds/main_theme.ogg') # background music
+pygame.mixer.music.play(-1, 0.0, 5000)    # 5000ms delay after starting game
+coin_sound = pygame.mixer.Sound('sounds/coin.wav')
+coin_sound.set_volume(0.5)
+jump_sound = pygame.mixer.Sound('sounds/jump.wav')
+jump_sound.set_volume(0.5)
+flag_sound = pygame.mixer.Sound('sounds/flagpole.wav')
+flag_sound.set_volume(0.5)
+game_over_fx = pygame.mixer.Sound('sounds/game_over.ogg')
+game_over_fx.set_volume(0.5)
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -91,7 +110,6 @@ class Button():
 class Player():
     def __init__(self, x, y):
         self.reset(x, y)
-
         # self.jumpCount = 7
         # self.left = False
         # self.right = False
@@ -107,6 +125,7 @@ class Player():
         if game_over == 0:
             key = pygame.key.get_pressed()
             if key[pygame.K_SPACE] and self.isJumping == False and self.in_air == False:
+                jump_sound.play()
                 self.vel = -15
                 self.isJumping = True
             if key[pygame.K_SPACE] == False:
@@ -162,12 +181,14 @@ class Player():
             # check for collision with enemies
             if pygame.sprite.spritecollide(self, dino_group, False):
                 game_over = -1
-                for entity in dino_group:
-                    entity.kill()
+                game_over_fx.play()
+
 
                     # check for collision with flag
             if pygame.sprite.spritecollide(self, flag_group, False):
                 game_over = 1
+
+
 
             self.rect.x += dx
             self.rect.y += dy
@@ -365,6 +386,7 @@ while run:
             # check if a coin has been collected
             if pygame.sprite.spritecollide(player, coin_group, True):
                 score += 1  #increase score by one
+                coin_sound.play()
             draw_text('X ' + str(score), font_score, blue, tile_size - 10, 10)
 
         # works because draw methode is in sprite class included
