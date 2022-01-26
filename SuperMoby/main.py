@@ -19,8 +19,8 @@ SCREENHEIGHT = 700
 SCREENWIDTH = 700  # 640, 480
 
 #define font
-font = pygame.font.SysFont('Bauhaus 93', 30)
-font_score = pygame.font.SysFont('Bauhaus 93', 30)
+font = pygame.font.SysFont('Arial', 30)
+font_score = pygame.font.SysFont('Arial', 30)
 
 #define colours
 white = (255, 255, 255)
@@ -31,7 +31,7 @@ tile_size = 50
 game_over = 0
 main_menu = True
 level = 0
-max_levels = 3
+max_levels = 4
 
 score = 0
 
@@ -47,16 +47,17 @@ exit_img = pygame.image.load('assets/exit_btn.png')
 
 
 # load sounds
-pygame.mixer.music.load('sounds/main_theme.ogg') # background music
-pygame.mixer.music.play(-1, 0.0, 5000)    # 5000ms delay after starting game
+# mute music
+#pygame.mixer.music.load('sounds/main_theme.ogg') # background music
+#pygame.mixer.music.play(-1, 0.0, 5000)    # 5000ms delay after starting game
 coin_sound = pygame.mixer.Sound('sounds/coin.wav')
-coin_sound.set_volume(0.5)
+coin_sound.set_volume(0.2)
 jump_sound = pygame.mixer.Sound('sounds/jump.wav')
-jump_sound.set_volume(0.5)
+jump_sound.set_volume(0.2)
 flag_sound = pygame.mixer.Sound('sounds/flagpole.wav')
-flag_sound.set_volume(0.5)
+flag_sound.set_volume(0.2)
 game_over_fx = pygame.mixer.Sound('sounds/game_over.ogg')
-game_over_fx.set_volume(0.5)
+game_over_fx.set_volume(0.2)
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -67,6 +68,7 @@ def draw_text(text, font, text_col, x, y):
 def reset_level(level):
     player.reset(80, SCREENHEIGHT - 130)
     dino_group.empty()
+    coin_group.empty()
     flag_group.empty()
 
     # load in level data and create world
@@ -74,6 +76,10 @@ def reset_level(level):
         pickle_in = open(f'level{level}_data', 'rb')
         world_data = pickle.load(pickle_in)
     world = World(world_data)
+
+    # create coin for showing score
+    score_coin = Coin(tile_size // 2, tile_size // 2)
+    coin_group.add(score_coin)
 
     return world
 
@@ -122,6 +128,8 @@ class Player():
         dy = 0
         dx = 0
         animation = 5
+        collision_overlap = 20
+
         if game_over == 0:
             key = pygame.key.get_pressed()
             if key[pygame.K_SPACE] and self.isJumping == False and self.in_air == False:
@@ -157,6 +165,7 @@ class Player():
                 if self.mirror == -1:
                     self.image = self.images_left[self.index]
 
+            # gravity
             self.vel += 1
             if self.vel > 15:
                 self.vel = 10
@@ -166,37 +175,62 @@ class Player():
             self.in_air = True
 
             for tile in world.tile_list:
-                # x
+                # check collision in x-axis
                 if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                     dx = 0
-                # y
+                # check collision in y-axis
                 if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                    # check if below the ground i.e. jumping
                     if self.vel < 0:
                         dy = tile[1].bottom - self.rect.top
                         self.vel = 0
+                    # check if above the ground i.e. falling
                     elif self.vel >= 0:
                         dy = tile[1].top - self.rect.bottom
                         self.vel = 0
                         self.in_air = False
+
+
             # check for collision with enemies
             if pygame.sprite.spritecollide(self, dino_group, False):
                 game_over = -1
                 game_over_fx.play()
 
 
-                    # check for collision with flag
+            # check for collision with flag
             if pygame.sprite.spritecollide(self, flag_group, False):
                 game_over = 1
 
 
 
+            # # check for collision with enemies
+            # for dino in dino_group:
+            #     # check collision in x-axis
+            #     if dino.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+            #         dx = 0   #delta change in x
+            #     # check collision in y-axis
+            #     if dino.rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+            #
+            #         # check if below the below the enemy
+            #         if abs((self.rect.top - dy) - dino.rect.bottom) < collision_overlap:
+            #             self.vel_y = 0
+            #             dy = dino.rect.bottom - self.rect.top
+            #             game_over = -1
+            #
+            #         # check if above the enemy jumping
+            #         elif abs((self.rect.bottom + dy) - dino.rect.top) < collision_overlap:  # abs: absolute converts any neg to pos
+            #             self.rect.bottom = dino.rect.top - 1
+            #             self.in_air = False
+            #             dy = 0
+
+            # update player coordinates
             self.rect.x += dx
             self.rect.y += dy
 
         elif game_over == -1:
             self.image = self.dead_image
             draw_text('GAME OVER', font, blue, (SCREENWIDTH // 2) - 200, SCREENHEIGHT // 2)
-            if self.rect.y > 2000:
+            if self.rect.y > 200:
                 self.rect.y -= 5
 
             # if self.rect.bottom > SCREENHEIGHT:
@@ -231,33 +265,17 @@ class Player():
         self.mirror = 0
 
 
-class Flag(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('objects2/6.png')
-        self.image = pygame.transform.scale(img, (tile_size, int(tile_size * 1.5)))
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
-class Coin(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('objects2/8.png')
-        self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
-        self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
-
-
-
 class World():
     def __init__(self, data):
         self.tile_list = []
         sand_img = pygame.image.load(os.path.join('objects2', '0.png'))
         shell_img = pygame.image.load(os.path.join('objects2', '1.png'))
         star_img = pygame.image.load(os.path.join('objects2', '2.png'))
+        sand_img_dark = pygame.image.load(os.path.join('objects2', '3.png'))
+        shell_img_dark = pygame.image.load(os.path.join('objects2', '4.png'))
+        star_img_dark = pygame.image.load(os.path.join('objects2', '5.png'))
 
-        row_count = -1
+        row_count = -1   #?
         for row in data:
             col_count = 0
             for tile in row:
@@ -282,7 +300,29 @@ class World():
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
+                if tile == 3:
+                    img = pygame.transform.scale(sand_img_dark, (tile_size, tile_size))
+                    img_rect = img.get_rect()  # for collision
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
+                if tile == 4:
+                    img = pygame.transform.scale(shell_img_dark, (tile_size, tile_size))
+                    img_rect = img.get_rect()  # for collision
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
+                if tile == 5:
+                    img = pygame.transform.scale(star_img_dark, (tile_size, tile_size))
+                    img_rect = img.get_rect()  # for collision
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)
                 if tile == 6:
+                    # x, y
                     flag = Flag(col_count * tile_size, row_count * tile_size - (tile_size // 2))
                     flag_group.add(flag)
                 if tile == 8:
@@ -299,6 +339,27 @@ class World():
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
             # pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+
+
+
+class Flag(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('objects2/6.png')
+        self.image = pygame.transform.scale(img, (tile_size, int(tile_size * 1.5)))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('objects2/8.png')
+        self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+
+
 
 
 class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Sprite class (Sprite has some functions)
@@ -323,6 +384,8 @@ class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Spri
             self.move_counter *= -1
 
 
+
+
 # world_data = [
 #     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
 #     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6, 0],
@@ -343,10 +406,14 @@ class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Spri
 
 
 player = Player(80, SCREENHEIGHT - 130)
-dino_group = pygame.sprite.Group()
-flag_group = pygame.sprite.Group()
-coin_group = pygame.sprite.Group()
-# create coin for showing score
+
+
+flag_group = pygame.sprite.Group()  # 6 in array
+coin_group = pygame.sprite.Group()  # 8
+dino_group = pygame.sprite.Group()  # 11
+
+
+#create dummy coin for showing the score
 score_coin = Coin(tile_size // 2, tile_size // 2)
 coin_group.add(score_coin)
 
