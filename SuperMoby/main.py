@@ -30,8 +30,8 @@ blue = (0, 0, 255)
 tile_size = 50
 game_over = 0
 main_menu = True
-level = 0
-max_levels = 1
+level = 1
+max_levels = 4
 
 score = 0
 
@@ -134,7 +134,7 @@ class Player():
             key = pygame.key.get_pressed()
             if key[pygame.K_SPACE] and self.isJumping == False and self.in_air == False:
                 jump_sound.play()
-                self.vel = -15
+                self.vel = -18
                 self.isJumping = True
             if key[pygame.K_SPACE] == False:
                 self.isJumping = False
@@ -449,6 +449,7 @@ while run:
 
         if game_over == 0:
             dino_group.update()
+
             #update score
             # check if a coin has been collected
             if pygame.sprite.spritecollide(player, coin_group, True):
@@ -483,12 +484,14 @@ while run:
             else:
                 draw_text('CONGRATULATIONS YOU WON!!', font, blue, (SCREENWIDTH // 2) - 260, SCREENHEIGHT // 2)
                 if restart_btn.draw():
-                    level = 0
+                    level = 1
                     # reset level
                     world_data = []
                     world = reset_level(level)
                     game_over = 0
                     score = 0
+
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
