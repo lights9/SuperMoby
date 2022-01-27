@@ -31,7 +31,7 @@ tile_size = 50
 game_over = 0
 main_menu = True
 level = 0
-max_levels = 0
+max_levels = 1
 
 score = 0
 
