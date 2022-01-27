@@ -31,7 +31,7 @@ tile_size = 50
 game_over = 0
 main_menu = True
 level = 0
-max_levels = 4
+max_levels = 0
 
 score = 0
 
@@ -483,7 +483,7 @@ while run:
             else:
                 draw_text('CONGRATULATIONS YOU WON!!', font, blue, (SCREENWIDTH // 2) - 260, SCREENHEIGHT // 2)
                 if restart_btn.draw():
-                    level = 1
+                    level = 0
                     # reset level
                     world_data = []
                     world = reset_level(level)
