@@ -31,7 +31,7 @@ tile_size = 50
 game_over = 0
 main_menu = True
 level = 1
-max_levels = 4
+max_levels = 3
 
 score = 0
 
@@ -190,38 +190,29 @@ class Player():
                         self.vel = 0
                         self.in_air = False
 
-
             # check for collision with enemies
-            if pygame.sprite.spritecollide(self, dino_group, False):
-                game_over = -1
-                game_over_fx.play()
+            jumpedEnemy = pygame.sprite.spritecollide(self, dino_group, True)
+            ranIntoEnemy = pygame.sprite.spritecollide(self, dino_group, False)
+
+            for dino in dino_group:
+                 if self.isJumping and self.rect.bottomright == dino.rect.topleft:
+                    jumpedEnemy
+                    #dino.kill()
+
+                 if self.rect.left == dino.rect.right or self.rect.right == dino.rect.left:
+                    ranIntoEnemy
+                    game_over = -1
+                    game_over_fx.play()
 
 
-            # check for collision with flag
+
+            #check for collision with flag
+
             if pygame.sprite.spritecollide(self, flag_group, False):
                 game_over = 1
 
 
 
-            # # check for collision with enemies
-            # for dino in dino_group:
-            #     # check collision in x-axis
-            #     if dino.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-            #         dx = 0   #delta change in x
-            #     # check collision in y-axis
-            #     if dino.rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-            #
-            #         # check if below the below the enemy
-            #         if abs((self.rect.top - dy) - dino.rect.bottom) < collision_overlap:
-            #             self.vel_y = 0
-            #             dy = dino.rect.bottom - self.rect.top
-            #             game_over = -1
-            #
-            #         # check if above the enemy jumping
-            #         elif abs((self.rect.bottom + dy) - dino.rect.top) < collision_overlap:  # abs: absolute converts any neg to pos
-            #             self.rect.bottom = dino.rect.top - 1
-            #             self.in_air = False
-            #             dy = 0
 
             # update player coordinates
             self.rect.x += dx
@@ -229,7 +220,7 @@ class Player():
 
         elif game_over == -1:
             self.image = self.dead_image
-            draw_text('GAME OVER', font, blue, (SCREENWIDTH // 2) - 200, SCREENHEIGHT // 2)
+            draw_text('GAME OVER', font, blue, (SCREENWIDTH // 2) - 100, SCREENHEIGHT // 2)
             if self.rect.y > 200:
                 self.rect.y -= 5
 
@@ -413,6 +404,8 @@ coin_group = pygame.sprite.Group()  # 8
 dino_group = pygame.sprite.Group()  # 11
 
 
+
+
 #create dummy coin for showing the score
 score_coin = Coin(tile_size // 2, tile_size // 2)
 coin_group.add(score_coin)
@@ -482,7 +475,7 @@ while run:
                 world = reset_level(level)
                 game_over = 0
             else:
-                draw_text('CONGRATULATIONS YOU WON!!', font, blue, (SCREENWIDTH // 2) - 260, SCREENHEIGHT // 2)
+                draw_text('CONGRATULATIONS YOU WON!!', font, blue, (SCREENWIDTH // 2) , SCREENHEIGHT // 2)
                 if restart_btn.draw():
                     level = 1
                     # reset level
