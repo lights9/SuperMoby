@@ -70,6 +70,9 @@ def reset_level(level):
     dino_group.empty()
     coin_group.empty()
     flag_group.empty()
+    darkstar_group.empty()
+    darkshell_group.empty()
+    darksand_group.empty()
 
     # load in level data and create world
     if path.exists(f'level{level}_data'):
@@ -192,6 +195,9 @@ class Player():
 
             # check for collision with enemies
             jumpedEnemy = pygame.sprite.spritecollide(self, dino_group, True)
+            jumpedStar = pygame.sprite.spritecollide(self, darkstar_group, True)
+            jumpedShell = pygame.sprite.spritecollide(self, darkshell_group, True)
+            jumpedSand = pygame.sprite.spritecollide(self, darksand_group, True)
             ranIntoEnemy = pygame.sprite.spritecollide(self, dino_group, False)
 
             for dino in dino_group:
@@ -203,6 +209,21 @@ class Player():
                     ranIntoEnemy
                     game_over = -1
                     game_over_fx.play()
+
+            for darkstar in darkstar_group:
+                 if self.isJumping and self.rect.top == darkstar.rect.bottom:
+                    jumpedStar
+                    #dino.kill()
+
+            for darkshell in darkshell_group:
+                 if self.isJumping and self.rect.top == darkshell.rect.bottom:
+                    jumpedShell
+                    #dino.kill()
+
+            for darksand in darksand_group:
+                 if self.isJumping and self.rect.top == darksand.rect.bottom:
+                    jumpedSand
+                    #dino.kill()
 
 
 
@@ -293,23 +314,30 @@ class World():
                     self.tile_list.append(tile)
                 if tile == 3:
                     img = pygame.transform.scale(sand_img_dark, (tile_size, tile_size))
+                    darksand = DarkSAND(col_count * tile_size, row_count * tile_size)
+                    darksand_group.add(darksand)
                     img_rect = img.get_rect()  # for collision
-                    img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size
+                    # img_rect.x = col_count * tile_size
+                    # img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
                 if tile == 4:
+                    darkshell = DarkSHELL(col_count * tile_size, row_count * tile_size)
+                    darkshell_group.add(darkshell)
                     img = pygame.transform.scale(shell_img_dark, (tile_size, tile_size))
                     img_rect = img.get_rect()  # for collision
-                    img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size
+                    # img_rect.x = col_count * tile_size
+                    # img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
                 if tile == 5:
                     img = pygame.transform.scale(star_img_dark, (tile_size, tile_size))
+                    darkstar = DarkSTAR(col_count * tile_size, row_count * tile_size)
+                    # groups = .add
+                    darkstar_group.add(darkstar)
                     img_rect = img.get_rect()  # for collision
-                    img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size
+                    #img_rect.x = col_count * tile_size
+                    #img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
                 if tile == 6:
@@ -374,6 +402,29 @@ class Enemy(pygame.sprite.Sprite):  # want enemy class to be a child of the Spri
             # when it goes to 51, it becomes -51
             self.move_counter *= -1
 
+class DarkSHELL(pygame.sprite.Sprite):  # want enemy class to be a child of the Sprite class (Sprite has some functions)
+    def __init__(self, x, y):  # constructor
+        pygame.sprite.Sprite.__init__(self)  # calling constructor from superclass
+        self.image = pygame.image.load('objects2/4.png')
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+class DarkSTAR(pygame.sprite.Sprite):  # want enemy class to be a child of the Sprite class (Sprite has some functions)
+    def __init__(self, x, y):  # constructor
+        pygame.sprite.Sprite.__init__(self)  # calling constructor from superclass
+        self.image = pygame.image.load('objects2/5.png')
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+class DarkSAND(pygame.sprite.Sprite):  # want enemy class to be a child of the Sprite class (Sprite has some functions)
+    def __init__(self, x, y):  # constructor
+        pygame.sprite.Sprite.__init__(self)  # calling constructor from superclass
+        self.image = pygame.image.load('objects2/3.png')
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
 
 
@@ -402,6 +453,9 @@ player = Player(80, SCREENHEIGHT - 130)
 flag_group = pygame.sprite.Group()  # 6 in array
 coin_group = pygame.sprite.Group()  # 8
 dino_group = pygame.sprite.Group()  # 11
+darkstar_group = pygame.sprite.Group()
+darkshell_group = pygame.sprite.Group()
+darksand_group = pygame.sprite.Group()
 
 
 
@@ -442,6 +496,9 @@ while run:
 
         if game_over == 0:
             dino_group.update()
+            darkstar_group.update()
+            darkshell_group.update()
+            darksand_group.update()
 
             #update score
             # check if a coin has been collected
@@ -454,6 +511,9 @@ while run:
         dino_group.draw(screen)
         coin_group.draw(screen)
         flag_group.draw(screen)
+        darkstar_group.draw(screen)
+        darkshell_group.draw(screen)
+        darksand_group.draw(screen)
 
         game_over = player.update(game_over)
 
