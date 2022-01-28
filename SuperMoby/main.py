@@ -1,7 +1,9 @@
 import os
-import pickle
-from os import path
 from sys import exit
+from os import path
+import pickle
+from pygame import mixer
+
 
 import pygame
 from pygame import mixer
@@ -47,9 +49,8 @@ exit_img = pygame.image.load('assets/exit_btn.png')
 
 # load sounds
 # mute music
-pygame.mixer.music.load('sounds/main_theme.ogg') # background music
-pygame.mixer.music.play(-1, 0.0, 5000)    # 5000ms delay after starting game
-pygame.mixer.music.set_volume(0.2)
+#pygame.mixer.music.load('sounds/main_theme.ogg') # background music
+#pygame.mixer.music.play(-1, 0.0, 5000)    # 5000ms delay after starting game
 coin_sound = pygame.mixer.Sound('sounds/coin.wav')
 coin_sound.set_volume(0.2)
 jump_sound = pygame.mixer.Sound('sounds/jump.wav')
@@ -502,7 +503,7 @@ while run:
                 world = reset_level(level)
                 game_over = 0
             else:
-                draw_text('CONGRATULATIONS YOU WON!!', font, blue, (SCREENWIDTH // 2) , SCREENHEIGHT // 2)
+                draw_text('CONGRATULATIONS!!', font, blue, (SCREENWIDTH // 2) - 200, SCREENHEIGHT // 2)
                 if restart_btn.draw():
                     level = 1
                     # reset level
