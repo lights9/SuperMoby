@@ -1,12 +1,10 @@
 import os
-from sys import exit
-from os import path
 import pickle
-from pygame import mixer
-
+from os import path
+from sys import exit
 
 import pygame
-
+from pygame import mixer
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
@@ -19,7 +17,8 @@ SCREENHEIGHT = 700
 SCREENWIDTH = 700  # 640, 480
 
 #define font
-font = pygame.font.SysFont('Arial', 30)
+font = pygame.font.SysFont('Arial', 40)
+font.set_bold(True)
 font_score = pygame.font.SysFont('Arial', 30)
 
 #define colours
@@ -48,8 +47,9 @@ exit_img = pygame.image.load('assets/exit_btn.png')
 
 # load sounds
 # mute music
-#pygame.mixer.music.load('sounds/main_theme.ogg') # background music
-#pygame.mixer.music.play(-1, 0.0, 5000)    # 5000ms delay after starting game
+pygame.mixer.music.load('sounds/main_theme.ogg') # background music
+pygame.mixer.music.play(-1, 0.0, 5000)    # 5000ms delay after starting game
+pygame.mixer.music.set_volume(0.2)
 coin_sound = pygame.mixer.Sound('sounds/coin.wav')
 coin_sound.set_volume(0.2)
 jump_sound = pygame.mixer.Sound('sounds/jump.wav')
@@ -119,19 +119,12 @@ class Button():
 class Player():
     def __init__(self, x, y):
         self.reset(x, y)
-        # self.jumpCount = 7
-        # self.left = False
-        # self.right = False
-        # self.walkCount = 0
-        # self.standing = True;
-        # self.hitbox = (self.x +20, self.y, 28, 60)
 
     def update(self, game_over):
 
         dy = 0
         dx = 0
         animation = 5
-        collision_overlap = 20
 
         if game_over == 0:
             key = pygame.key.get_pressed()
@@ -201,7 +194,7 @@ class Player():
             ranIntoEnemy = pygame.sprite.spritecollide(self, dino_group, False)
 
             for dino in dino_group:
-                 if self.isJumping and self.rect.bottomright == dino.rect.topleft:
+                 if self.isJumping and self.rect.bottom == dino.rect.top:
                     jumpedEnemy
                     #dino.kill()
 
@@ -213,17 +206,14 @@ class Player():
             for darkstar in darkstar_group:
                  if self.isJumping and self.rect.top == darkstar.rect.bottom:
                     jumpedStar
-                    #dino.kill()
 
             for darkshell in darkshell_group:
                  if self.isJumping and self.rect.top == darkshell.rect.bottom:
                     jumpedShell
-                    #dino.kill()
 
             for darksand in darksand_group:
                  if self.isJumping and self.rect.top == darksand.rect.bottom:
                     jumpedSand
-                    #dino.kill()
 
 
 
@@ -320,7 +310,7 @@ class World():
                     # img_rect.x = col_count * tile_size
                     # img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
-                    self.tile_list.append(tile)
+                    #self.tile_list.append(tile)
                 if tile == 4:
                     darkshell = DarkSHELL(col_count * tile_size, row_count * tile_size)
                     darkshell_group.add(darkshell)
@@ -329,7 +319,7 @@ class World():
                     # img_rect.x = col_count * tile_size
                     # img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
-                    self.tile_list.append(tile)
+                    #self.tile_list.append(tile)
                 if tile == 5:
                     img = pygame.transform.scale(star_img_dark, (tile_size, tile_size))
                     darkstar = DarkSTAR(col_count * tile_size, row_count * tile_size)
@@ -339,7 +329,7 @@ class World():
                     #img_rect.x = col_count * tile_size
                     #img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
-                    self.tile_list.append(tile)
+                    #self.tile_list.append(tile)
                 if tile == 6:
                     # x, y
                     flag = Flag(col_count * tile_size, row_count * tile_size - (tile_size // 2))
@@ -427,26 +417,6 @@ class DarkSAND(pygame.sprite.Sprite):  # want enemy class to be a child of the S
         self.rect.y = y
 
 
-
-# world_data = [
-#     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1],
-#     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 6, 0],
-#     [1, -1, -1, -1, -1, -1, 2, 0, 1, 0, -1, -1, 0, 1],
-#     [1, 0, -1, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-#     [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2],
-#     [0, -1, 0, 0, 2, -1, -1, -1, -1, -1, -1, -1, -1, 0],
-#     [0, 2, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, 0],
-#     [0, -1, -1, -1, -1, -1, -1, 2, 0, 1, 2, -1, -1, 0],
-#     [0, -1, -1, -1, -1, -1, -1, -1, 2, 0, -1, -1, -1, 2],
-#     [0, -1, -1, -1, -1, -1, -1, -1, -1, 4, 5, -1, 1, 0],
-#     [2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0],
-#     [1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 0, 0, 0],
-#     [0, -1, -1, -1, -1, 0, 1, -1, -1, -1, -1, -1, -1, 0],
-#     [0, -1, -1, -1, 0, 0, 1, -1, -1, -1, -1, -1, 3, 1],
-#     [0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
-# ]
-
-
 player = Player(80, SCREENHEIGHT - 130)
 
 
@@ -456,8 +426,6 @@ dino_group = pygame.sprite.Group()  # 11
 darkstar_group = pygame.sprite.Group()
 darkshell_group = pygame.sprite.Group()
 darksand_group = pygame.sprite.Group()
-
-
 
 
 #create dummy coin for showing the score
@@ -475,22 +443,21 @@ restart_btn = Button(SCREENWIDTH // 2 - 50, SCREENHEIGHT // 2 + 100, restart_img
 start_button = Button(SCREENWIDTH // 2 - 300, SCREENHEIGHT // 2, start_img)
 exit_button = Button(SCREENWIDTH // 2 + 40, SCREENHEIGHT // 2, exit_img)
 
-# main loop
-# moby = Player(40, 585, 40, 60)
-# dino = Enemy(40, 585, 40, 40, 930)
-# speed = 27 --> fps
+
 run = True
 while run:
-    clock.tick(fps)  # set FBS to 27
+    clock.tick(fps)  # set FBS to 60
 
     screen.blit(background, (0, 0))
     if main_menu == True:
-        screen.fill(color='Black')
+        screen.fill((100, 201, 207))
+        MENU_TEXT = font.render("SUPER MOBY: Deepblue", True, "#1572A1")
+        MENU_RECT = MENU_TEXT.get_rect(center=(325, 325))
+        screen.blit(MENU_TEXT, MENU_RECT)
         if exit_button.draw():
             run = False
         if start_button.draw():
             main_menu = False
-            #screen.fill(((100, 201, 207)))
     else:
         world.draw()
 
